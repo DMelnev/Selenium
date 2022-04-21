@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.time.Duration;
 
 public class TestGoogleSearch {
@@ -16,8 +17,8 @@ public class TestGoogleSearch {
     @Test
     public void testSearchGoogle() {
 
-        System.setProperty("webdriver.chrome.driver","D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
-//        WebDriverManager.chromedriver().setup(); //dont work in my case(((
+//        System.setProperty("webdriver.chrome.driver","D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
+        WebDriverManager.chromedriver().setup(); //dont work in my case(((
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
 
@@ -47,10 +48,10 @@ public class TestGoogleSearch {
 
         WebElement element = new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(driver1 -> driver1.findElement(By.xpath(".//*[@id=\"gb\"]/div/div[1]/div/div[1]/a")));
-        Assert.assertEquals(element.getText(),"Почта");
+        Assert.assertEquals(element.getText(), "Почта");
 //        assertEquals()
         webElement2.sendKeys("Поиск зелибобы");
-
+        webElement2.submit();
 //        driver.navigate().to("https://google.com");
 
 //        driver.quit();
