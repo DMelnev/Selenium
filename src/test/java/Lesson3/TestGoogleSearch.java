@@ -9,20 +9,23 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-
 import java.time.Duration;
 
 public class TestGoogleSearch {
+
     @Test
     public void testSearchGoogle() {
-        WebDriverManager.chromedriver().setup();
+
+        System.setProperty("webdriver.chrome.driver","D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
+//        WebDriverManager.chromedriver().setup(); //dont work in my case(((
         ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--incognito");
-        options.addArguments("--headless"); // hide mode
-//        options.addArguments("start-maximized");
+        options.addArguments("--incognito");
+
+//        options.addArguments("--headless"); // hide mode
+        options.addArguments("start-maximized");
         WebDriver driver = new ChromeDriver(options);
-//        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
         driver.get("https://google.com");
 
         WebElement webElement1 = driver.findElement(By.name("q"));
@@ -48,6 +51,8 @@ public class TestGoogleSearch {
 //        assertEquals()
         webElement2.sendKeys("Поиск зелибобы");
 
-        driver.quit();
+//        driver.navigate().to("https://google.com");
+
+//        driver.quit();
     }
 }
