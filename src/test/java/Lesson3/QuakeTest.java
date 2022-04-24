@@ -31,19 +31,20 @@ public class QuakeTest {
 
     @Before
     public void before() {
-        //        System.setProperty("webdriver.chrome.driver","D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
-        WebDriverManager.chromedriver().setup(); //doesn't work on my office PC (((
+//        System.setProperty("webdriver.chrome.driver", "D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
+        WebDriverManager.chromedriver().setup(); //doesn't work on my office PC ((( because program files there are not standard place. And How i can fix it, i don't know(((
         options = new ChromeOptions();
         options.addArguments("--incognito");
-//        options.addArguments("--headless"); // hide mode
-        options.addArguments("start-maximized");
+        options.addArguments("--headless"); // hide mode
+//        options.addArguments("start-maximized");
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.get(HOST);
 
     }
+
     @After
-    public void after(){
+    public void after() {
         driver.quit();
     }
 
@@ -110,6 +111,16 @@ public class QuakeTest {
         Thread.sleep(500);
         driver.findElement(By.xpath(".//a[contains(text(),'" + TEST_PRODUCT + "')]")).click();
         Thread.sleep(500);
+        goToNextPage();
+        WebElement buttonBuy = new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(driver1 -> driver1.findElement(By.cssSelector(".btn--pink:nth-child(1) > .text")));
+        buttonBuy.click();
+        Thread.sleep(1000);
+        WebElement result = driver.findElement(By.xpath("//div[@class=\"p-cart__title\"]/div[@class=\"text\"]"));
+        Assert.assertEquals(SUCCESSFUL_ORDER_RESULT, result.getText());
+    }
+
+    private void goToNextPage() { //I guess that this method doesn't change tab in hide mode (ElementClickInterceptedException: element click intercepted: Element is not clickable at point (658, 625))
         String originalWindow = driver.getWindowHandle();
         for (String windowHandle : driver.getWindowHandles()) {
             if (!originalWindow.contentEquals(windowHandle)) {
@@ -117,11 +128,5 @@ public class QuakeTest {
                 break;
             }
         }
-        WebElement buttonBuy = new WebDriverWait(driver, Duration.ofSeconds(5))
-                .until(driver1 -> driver1.findElement(By.cssSelector(".btn--pink:nth-child(1) > .text")));
-        buttonBuy.click();
-        Thread.sleep(1000);
-        WebElement result = driver.findElement(By.xpath("//div[@class=\"p-cart__title\"]/div[@class=\"text\"]"));
-        Assert.assertEquals(SUCCESSFUL_ORDER_RESULT, result.getText());
     }
 }
