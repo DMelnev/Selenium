@@ -58,7 +58,7 @@ public class QuakeTest {
             Thread.sleep(500);
             driver.findElement(By.xpath(".//button[@type='submit']")).click();
         } catch (TimeoutException e) {
-            Assert.assertTrue("Authorisation form has not loaded. Timeout exception.", false);
+            Assert.fail("Authorisation form has not loaded. Timeout exception.");
         }
         Thread.sleep(1000);
         WebElement result = new WebDriverWait(driver, Duration.ofSeconds(5))
