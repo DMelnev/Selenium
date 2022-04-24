@@ -20,7 +20,6 @@ public class QuakeTest {
     ChromeOptions options;
     WebDriver driver;
     String HOST = "https://quke.ru";
-    String ORDER_PAGE = "https://quke.ru/order";
     String LOGIN = "gb2010@internet.ru";
     String PASSWORD = "oeAytr93APE?";
     String USERNAME = "Tester";
@@ -74,6 +73,58 @@ public class QuakeTest {
         searchInput.submit();
         Thread.sleep(1000);
         List<WebElement> result = driver.findElements(By.xpath(".//a[contains(text(),'" + TEST_SEARCH + "')]"));
-        Assert.assertTrue("Hasn't found some search result",result.size() > 0);
+        Assert.assertTrue("Hasn't found some search result", result.size() > 0);
+    }
+
+    @Test
+    public void findProductByClick() throws InterruptedException {
+        WebElement searchInput = driver.findElement(By.xpath(".//input[@id='main-search-input']"));
+        searchInput.sendKeys(TEST_SEARCH);
+        WebElement buttonStartSearch = driver.findElement(By.cssSelector(".h-search__icon"));
+        buttonStartSearch.click();
+        Thread.sleep(1000);
+        List<WebElement> result = driver.findElements(By.xpath(".//a[contains(text(),'" + TEST_SEARCH + "')]"));
+        Assert.assertTrue("Hasn't found some search result", result.size() > 0);
+    }
+
+    @Test
+    public void findNotPresentProduct() throws InterruptedException {
+        WebElement searchInput = driver.findElement(By.xpath(".//input[@id='main-search-input']"));
+        searchInput.sendKeys(TEST_SEARCH_FAIL);
+        searchInput.submit();
+        Thread.sleep(1000);
+        List<WebElement> result = driver.findElements(By.xpath(".//a[contains(text(),'" + TEST_SEARCH_FAIL + "')]"));
+        Assert.assertEquals("Has found some search result but don't must", 0, result.size());
+    }
+
+    @Test
+    public void checkArticle() throws InterruptedException {
+        WebElement element1 = driver.findElement(By.xpath(".//span[contains(.,'Вход')]"));
+        element1.click();
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(driver1 -> driver1.findElement(By.cssSelector(".auth")));
+        WebElement emailInput = driver.findElement(By.xpath(".//input[@id='auth-email']"));
+        WebElement passInput = driver.findElement(By.xpath(".//input[@id='auth-pass']"));
+        WebElement buttonSubmit = driver.findElement(By.xpath(".//button[@type='submit']"));
+        emailInput.sendKeys(LOGIN);
+        passInput.sendKeys(PASSWORD);
+        Thread.sleep(500);
+        buttonSubmit.click();
+        Thread.sleep(1000);
+        WebElement searchInput = driver.findElement(By.xpath(".//input[@id='main-search-input']"));
+        searchInput.sendKeys(TEST_SEARCH);
+        WebElement buttonStartSearch = driver.findElement(By.cssSelector(".h-search__icon"));
+        buttonStartSearch.click();
+        Thread.sleep(1000);
+
+        WebElement product = new WebDriverWait(driver, Duration.ofSeconds(3))
+                .until(driver1 -> driver1.findElement(By.xpath(".//a[contains(text(),'" + TEST_PRODUCT + "')]")));
+        product.click();
+        WebElement buttonBuy = new WebDriverWait(driver, Duration.ofSeconds(3))
+                .until(driver1 -> driver1.findElement(By.cssSelector(".btn--pink:nth-child(1) > .text")));
+        buttonBuy.click();
+
+
+
     }
 }
