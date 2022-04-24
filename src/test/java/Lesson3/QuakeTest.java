@@ -1,9 +1,10 @@
 package Lesson3;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.Test;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.After;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -26,6 +27,7 @@ public class QuakeTest {
     String TEST_SEARCH = "Samsung Galaxy A52 128";
     String TEST_SEARCH_FAIL = "Samsung Galaxy A52 129";
     String TEST_PRODUCT = "Samsung Galaxy A52 128Gb Black";
+    String SUCCESSFUL_ORDER_RESULT = "Товар добавлен в корзину";
 
     @Before
     public void before() {
@@ -40,29 +42,27 @@ public class QuakeTest {
         driver.get(HOST);
 
     }
+    @After
+    public void after(){
+        driver.quit();
+    }
 
     @Test
     public void authorisation() throws InterruptedException {
-        WebElement element1 = driver.findElement(By.xpath(".//span[contains(.,'Вход')]"));
-        element1.click();
+        driver.findElement(By.xpath(".//span[contains(.,'Вход')]")).click();
         try {
             new WebDriverWait(driver, Duration.ofSeconds(5))
                     .until(driver1 -> driver1.findElement(By.cssSelector(".auth")));
-            WebElement emailInput = driver.findElement(By.xpath(".//input[@id='auth-email']"));
-            WebElement passInput = driver.findElement(By.xpath(".//input[@id='auth-pass']"));
-            WebElement buttonSubmit = driver.findElement(By.xpath(".//button[@type='submit']"));
-            emailInput.sendKeys(LOGIN);
-            passInput.sendKeys(PASSWORD);
+            driver.findElement(By.xpath(".//input[@id='auth-email']")).sendKeys(LOGIN);
+            driver.findElement(By.xpath(".//input[@id='auth-pass']")).sendKeys(PASSWORD);
             Thread.sleep(500);
-            buttonSubmit.click();
-
+            driver.findElement(By.xpath(".//button[@type='submit']")).click();
         } catch (TimeoutException e) {
             Assert.assertTrue("Authorisation form has not loaded. Timeout exception.", false);
         }
         Thread.sleep(1000);
         WebElement result = new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(driver1 -> driver1.findElement(By.xpath(".//a[2]/span")));
-        System.out.println(result.getText());
         Assert.assertEquals(USERNAME, result.getText());
     }
 
@@ -78,10 +78,8 @@ public class QuakeTest {
 
     @Test
     public void findProductByClick() throws InterruptedException {
-        WebElement searchInput = driver.findElement(By.xpath(".//input[@id='main-search-input']"));
-        searchInput.sendKeys(TEST_SEARCH);
-        WebElement buttonStartSearch = driver.findElement(By.cssSelector(".h-search__icon"));
-        buttonStartSearch.click();
+        driver.findElement(By.xpath(".//input[@id='main-search-input']")).sendKeys(TEST_SEARCH);
+        driver.findElement(By.cssSelector(".h-search__icon")).click();
         Thread.sleep(1000);
         List<WebElement> result = driver.findElements(By.xpath(".//a[contains(text(),'" + TEST_SEARCH + "')]"));
         Assert.assertTrue("Hasn't found some search result", result.size() > 0);
@@ -99,32 +97,31 @@ public class QuakeTest {
 
     @Test
     public void checkArticle() throws InterruptedException {
-        WebElement element1 = driver.findElement(By.xpath(".//span[contains(.,'Вход')]"));
-        element1.click();
+        driver.findElement(By.xpath(".//span[contains(.,'Вход')]")).click();
         new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(driver1 -> driver1.findElement(By.cssSelector(".auth")));
-        WebElement emailInput = driver.findElement(By.xpath(".//input[@id='auth-email']"));
-        WebElement passInput = driver.findElement(By.xpath(".//input[@id='auth-pass']"));
-        WebElement buttonSubmit = driver.findElement(By.xpath(".//button[@type='submit']"));
-        emailInput.sendKeys(LOGIN);
-        passInput.sendKeys(PASSWORD);
+        driver.findElement(By.xpath(".//input[@id='auth-email']")).sendKeys(LOGIN);
+        driver.findElement(By.xpath(".//input[@id='auth-pass']")).sendKeys(PASSWORD);
         Thread.sleep(500);
-        buttonSubmit.click();
-        Thread.sleep(1000);
-        WebElement searchInput = driver.findElement(By.xpath(".//input[@id='main-search-input']"));
-        searchInput.sendKeys(TEST_SEARCH);
-        WebElement buttonStartSearch = driver.findElement(By.cssSelector(".h-search__icon"));
-        buttonStartSearch.click();
-        Thread.sleep(1000);
-
-        WebElement product = new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(driver1 -> driver1.findElement(By.xpath(".//a[contains(text(),'" + TEST_PRODUCT + "')]")));
-        product.click();
-        WebElement buttonBuy = new WebDriverWait(driver, Duration.ofSeconds(3))
+        driver.findElement(By.xpath(".//button[@type='submit']")).click();
+        Thread.sleep(500);
+        driver.findElement(By.xpath(".//input[@id='main-search-input']")).sendKeys(TEST_SEARCH);
+        driver.findElement(By.cssSelector(".h-search__icon")).click();
+        Thread.sleep(500);
+        driver.findElement(By.xpath(".//a[contains(text(),'" + TEST_PRODUCT + "')]")).click();
+        Thread.sleep(500);
+        String originalWindow = driver.getWindowHandle();
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!originalWindow.contentEquals(windowHandle)) {
+                driver.switchTo().window(windowHandle);
+                break;
+            }
+        }
+        WebElement buttonBuy = new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(driver1 -> driver1.findElement(By.cssSelector(".btn--pink:nth-child(1) > .text")));
         buttonBuy.click();
-
-
-
+        Thread.sleep(1000);
+        WebElement result = driver.findElement(By.xpath("//div[@class=\"p-cart__title\"]/div[@class=\"text\"]"));
+        Assert.assertEquals(SUCCESSFUL_ORDER_RESULT, result.getText());
     }
 }
