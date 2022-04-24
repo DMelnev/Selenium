@@ -31,11 +31,13 @@ public class QuakeTest {
 
     @Before
     public void before() {
+
+        WebDriverManager.chromedriver().setup(); //doesn't work on my office PC ((( because program files there are not standard place.(((
 //        System.setProperty("webdriver.chrome.driver", "D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
-        WebDriverManager.chromedriver().setup(); //doesn't work on my office PC ((( because program files there are not standard place. And How i can fix it, i don't know(((
+
         options = new ChromeOptions();
         options.addArguments("--incognito");
-//        options.addArguments("--headless"); // hide mode
+//        options.addArguments("--headless"); // Hide mode
         options.addArguments("start-maximized");
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
@@ -114,13 +116,13 @@ public class QuakeTest {
         goToNextPage();
         WebElement buttonBuy = new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(driver1 -> driver1.findElement(By.cssSelector(".btn--pink:nth-child(1) > .text")));
-        buttonBuy.click();
+        buttonBuy.click();//In hide mode (ElementClickInterceptedException: element click intercepted: Element is not clickable at point (658, 625))
         Thread.sleep(1000);
         WebElement result = driver.findElement(By.xpath("//div[@class=\"p-cart__title\"]/div[@class=\"text\"]"));
         Assert.assertEquals(SUCCESSFUL_ORDER_RESULT, result.getText());
     }
 
-    private void goToNextPage() { //I guess that this method doesn't change tab in hide mode (ElementClickInterceptedException: element click intercepted: Element is not clickable at point (658, 625))
+    private void goToNextPage() {
         String originalWindow = driver.getWindowHandle();
         for (String windowHandle : driver.getWindowHandles()) {
             if (!originalWindow.contentEquals(windowHandle)) {
