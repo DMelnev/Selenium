@@ -35,8 +35,8 @@ public class QuakeTest {
         WebDriverManager.chromedriver().setup(); //doesn't work on my office PC ((( because program files there are not standard place. And How i can fix it, i don't know(((
         options = new ChromeOptions();
         options.addArguments("--incognito");
-        options.addArguments("--headless"); // hide mode
-//        options.addArguments("start-maximized");
+//        options.addArguments("--headless"); // hide mode
+        options.addArguments("start-maximized");
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.get(HOST);
