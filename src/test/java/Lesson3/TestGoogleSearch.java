@@ -1,7 +1,9 @@
 package Lesson3;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,9 +15,9 @@ import java.time.Duration;
 
 public class TestGoogleSearch {
 
-    @Test
-    public void testSearchGoogle() {
-
+    WebDriver driver;
+    @Before
+    public void before(){
         System.setProperty("webdriver.chrome.driver","D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
 //        WebDriverManager.chromedriver().setup(); //dont work in my case(((
         ChromeOptions options = new ChromeOptions();
@@ -23,10 +25,21 @@ public class TestGoogleSearch {
 
 //        options.addArguments("--headless"); // hide mode
         options.addArguments("start-maximized");
-        WebDriver driver = new ChromeDriver(options);
+        driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
         driver.get("https://google.com");
+
+    }
+    @After
+    public void after(){
+
+        driver.quit();
+    }
+
+    @Test
+    public void testSearchGoogle() {
+
 
         WebElement webElement1 = driver.findElement(By.name("q"));
         WebElement webElement2 = driver.findElement(By.cssSelector("input.gLFyf.gsfi"));
@@ -50,6 +63,7 @@ public class TestGoogleSearch {
         Assert.assertEquals(element.getText(),"Почта");
 //        assertEquals()
         webElement2.sendKeys("Поиск зелибобы");
+        webElement2.clear();
 
 //        driver.navigate().to("https://google.com");
 
