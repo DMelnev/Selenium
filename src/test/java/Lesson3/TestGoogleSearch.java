@@ -18,8 +18,8 @@ public class TestGoogleSearch {
     WebDriver driver;
     @Before
     public void before(){
-        System.setProperty("webdriver.chrome.driver","D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
-//        WebDriverManager.chromedriver().setup(); //dont work in my case(((
+//        System.setProperty("webdriver.chrome.driver","D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
+        WebDriverManager.chromedriver().setup(); //dont work in my case(((
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
 
