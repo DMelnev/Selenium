@@ -47,6 +47,7 @@ public class QuakeTest {
 
     @After
     public void after() {
+
         driver.quit();
     }
 
