@@ -8,8 +8,13 @@ package Lesson4;
 
 public class Main {
     public static void main(String[] args) {
+;
+        if (rectangleSquare(3, 4, 5) != 7.0D){
+            System.out.println("Test filed");
+        }else{
+            System.out.println("Test passed");
+        }
 
-        System.out.println(rectangleSquare(3, 4, 5));
     }
 
     public static double rectangleSquare(double a, double b, double c) {
