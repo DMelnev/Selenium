@@ -18,8 +18,8 @@ class TriangleTest {
 
     private static Triangle triangle;
 
-    @BeforeAll
-    static void beforeAll() {
+    @BeforeEach
+    void beforeEach() {
         triangle = new Triangle();
     }
 
