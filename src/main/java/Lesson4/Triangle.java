@@ -8,7 +8,7 @@ public class Triangle {
     }
 
     private boolean checkTriangle(int a, int b, int c) {
-        return (a < (b + c)) && (b < (a + c)) && (c < (a + b));
+        return (a < b + c) && (b < a + c) && (c < a + b);
     }
 
     public double division(int divisible, int divider) { //for testing @Nested
