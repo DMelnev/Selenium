@@ -93,10 +93,8 @@ class TriangleTest {
         @Test
         @DisplayName("Timeout test")
         void TimeoutTest() {
-            Assertions.assertTimeout(Duration.ofMillis(5), () -> {
-                triangle.triangleSquare(3, 4, 5);
-                return "result";
-            });
+            Assertions.assertTimeout(Duration.ofMillis(5),
+                    () -> triangle.triangleSquare(3, 4, 5));
             logger.info("TimeoutTest passed");
         }
     }
