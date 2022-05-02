@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class MainTest {
     static Logger logger = LoggerFactory.getLogger(MainTest.class);
     private final double DELTA = 0.001;
-    static int counter1 = 0;
-    static int counter2 = 0;
+    private static int counter1 = 0;
+    private static int counter2 = 0;
 
     @Nested
     @DisplayName("triangle square tests")
