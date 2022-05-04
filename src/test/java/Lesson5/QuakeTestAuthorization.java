@@ -9,14 +9,13 @@ package Lesson5;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebElement;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -24,7 +23,6 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.swing.*;
@@ -96,8 +94,7 @@ public class QuakeTestAuthorization extends PrepareTest {
         driver.findElement(By.xpath(".//span[contains(.,'Вход')]")).click();
         new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(driver1 -> driver1.findElement(By.cssSelector(".auth")));
-        Actions searchInput = new Actions(driver);
-        searchInput
+        actions
                 .sendKeys(driver.findElement(By.xpath(".//input[@id='auth-email']")), LOGIN)
                 .sendKeys(driver.findElement(By.xpath(".//input[@id='auth-pass']")), PASSWORD)
                 .pause(500L)
@@ -105,7 +102,7 @@ public class QuakeTestAuthorization extends PrepareTest {
                 .pause(500L)
                 .build()
                 .perform();
-        searchInput
+        actions
                 .sendKeys(driver.findElement(By.xpath(".//input[@id='main-search-input']")), TEST_SEARCH)
                 .click(driver.findElement(By.cssSelector(".h-search__icon")))
                 .pause(500L)

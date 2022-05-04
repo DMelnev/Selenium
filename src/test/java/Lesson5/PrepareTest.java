@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 
 import java.time.Duration;
 
@@ -21,6 +22,7 @@ public abstract class PrepareTest {
 
     static ChromeOptions options;
     static WebDriver driver;
+    Actions actions;
     String HOST = "https://quke.ru";
     String LOGIN = "gb2010@internet.ru";
     String PASSWORD = "oeAytr93APE?";
@@ -44,6 +46,7 @@ public abstract class PrepareTest {
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.get(HOST);
+        actions = new Actions(driver);
     }
 
     @AfterEach
