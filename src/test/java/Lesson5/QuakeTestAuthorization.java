@@ -11,6 +11,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.openqa.selenium.WebDriver;
@@ -24,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.swing.*;
 import java.time.Duration;
 import java.util.List;
 
@@ -34,6 +38,7 @@ public class QuakeTestAuthorization extends PrepareTest {
     String SUCCESSFUL_ORDER_RESULT = "Товар добавлен в корзину";
 
     @Test
+    @DisplayName("Проверка авторизации")
     public void authorisation() throws InterruptedException {
         driver.findElement(By.xpath(".//span[contains(.,'Вход')]")).click();
         try {
@@ -53,7 +58,9 @@ public class QuakeTestAuthorization extends PrepareTest {
     }
 
     @Test
+    @DisplayName("Поиск продукта нажатием Enter")
     public void findProductBySubmit() throws InterruptedException {
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.urlContains("https://quke.ru"));
         WebElement searchInput = driver.findElement(By.xpath(".//input[@id='main-search-input']"));
         searchInput.sendKeys(TEST_SEARCH);
         searchInput.submit();
@@ -63,6 +70,7 @@ public class QuakeTestAuthorization extends PrepareTest {
     }
 
     @Test
+    @DisplayName("Поиск продукта нажатием ЛКМ")
     public void findProductByClick() throws InterruptedException {
         driver.findElement(By.xpath(".//input[@id='main-search-input']")).sendKeys(TEST_SEARCH);
         driver.findElement(By.cssSelector(".h-search__icon")).click();
@@ -72,6 +80,7 @@ public class QuakeTestAuthorization extends PrepareTest {
     }
 
     @Test
+    @DisplayName("Поиск отсутствующего товара")
     public void findNotPresentProduct() throws InterruptedException {
         WebElement searchInput = driver.findElement(By.xpath(".//input[@id='main-search-input']"));
         searchInput.sendKeys(TEST_SEARCH_FAIL);
@@ -82,22 +91,30 @@ public class QuakeTestAuthorization extends PrepareTest {
     }
 
     @Test
+    @DisplayName("Добавление товара в корзину")
     public void checkArticle() throws InterruptedException {
         driver.findElement(By.xpath(".//span[contains(.,'Вход')]")).click();
         new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(driver1 -> driver1.findElement(By.cssSelector(".auth")));
-        driver.findElement(By.xpath(".//input[@id='auth-email']")).sendKeys(LOGIN);
-        driver.findElement(By.xpath(".//input[@id='auth-pass']")).sendKeys(PASSWORD);
-        Thread.sleep(500);
-        driver.findElement(By.xpath(".//button[@type='submit']")).click();
-        Thread.sleep(500);
-        driver.findElement(By.xpath(".//input[@id='main-search-input']")).sendKeys(TEST_SEARCH);
-        driver.findElement(By.cssSelector(".h-search__icon")).click();
-        Thread.sleep(500);
+        Actions searchInput = new Actions(driver);
+        searchInput
+                .sendKeys(driver.findElement(By.xpath(".//input[@id='auth-email']")), LOGIN)
+                .sendKeys(driver.findElement(By.xpath(".//input[@id='auth-pass']")), PASSWORD)
+                .pause(500L)
+                .click(driver.findElement(By.xpath(".//button[@type='submit']")))
+                .pause(500L)
+                .build()
+                .perform();
+        searchInput
+                .sendKeys(driver.findElement(By.xpath(".//input[@id='main-search-input']")), TEST_SEARCH)
+                .click(driver.findElement(By.cssSelector(".h-search__icon")))
+                .pause(500L)
+                .build()
+                .perform();
         driver.findElement(By.xpath(".//a[contains(text(),'" + TEST_PRODUCT + "')]")).click();
         Thread.sleep(500);
         goToNextPage();
-        WebElement buttonBuy = new WebDriverWait(driver, Duration.ofSeconds(5))
+        WebElement buttonBuy = new WebDriverWait(driver, Duration.ofSeconds(2))
                 .until(driver1 -> driver1.findElement(By.cssSelector(".btn--pink:nth-child(1) > .text")));
         buttonBuy.click();
         Thread.sleep(1000);
