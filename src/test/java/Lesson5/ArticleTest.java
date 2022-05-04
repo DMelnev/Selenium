@@ -65,17 +65,8 @@ public class ArticleTest extends PrepareTest {
     @Test
     @DisplayName("Добавление товара в корзину")
     public void checkArticle() throws InterruptedException {
-        driver.findElement(By.xpath(".//span[contains(.,'Вход')]")).click();
-        new WebDriverWait(driver, Duration.ofSeconds(5))
-                .until(driver1 -> driver1.findElement(By.cssSelector(".auth")));
-        actions
-                .sendKeys(driver.findElement(By.xpath(".//input[@id='auth-email']")), LOGIN)
-                .sendKeys(driver.findElement(By.xpath(".//input[@id='auth-pass']")), PASSWORD)
-                .pause(500L)
-                .click(driver.findElement(By.xpath(".//button[@type='submit']")))
-                .pause(500L)
-                .build()
-                .perform();
+        if (!authorization(LOGIN, PASSWORD, USERNAME)) fail("Cannot log in");
+
         actions
                 .sendKeys(driver.findElement(By.xpath(".//input[@id='main-search-input']")), TEST_SEARCH)
                 .click(driver.findElement(By.cssSelector(".h-search__icon")))

@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class PrepareTest {
 
@@ -71,7 +71,7 @@ public abstract class PrepareTest {
                     .build()
                     .perform();
         } catch (TimeoutException e) {
-            assertFalse(false, "Authorisation form has not loaded. Timeout exception.");
+            fail("Authorisation form has not loaded. Timeout exception.");
         }
         Thread.sleep(500);
         WebElement result = new WebDriverWait(driver, Duration.ofSeconds(5))
