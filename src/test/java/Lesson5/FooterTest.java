@@ -18,14 +18,24 @@ public class FooterTest extends PrepareTest {
     @Test
     @DisplayName("Меню футера, контакты")
     public void checkFooter() throws InterruptedException {
-//        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-//        long windowWidth = (long) jsExecutor.executeScript("return window.innerWidth");
-//        System.out.println("Window width " + windowWidth);
-//        jsExecutor.executeScript("window.scrollBy(0,500)");
-//        Thread.sleep(1000);
         driver.findElement(By.xpath(".//body")).sendKeys(Keys.CONTROL, Keys.END);
         Thread.sleep(500);
         List<WebElement> result = driver.findElements(By.xpath("//span[@class='f-menu__title' and contains(text(),'Контакты')]"));
         assertTrue(result.size() > 0, "Has not found menu \"Контакты\"");
     }
+
+    @Test
+    @DisplayName("Телефон Интернет Магазина")
+    public void checkPhoneOnlineStore(){
+        List<WebElement> result = driver.findElements(By.xpath("//span[contains(text(),'(495) 225-95-02')]"));
+        assertTrue(result.size() > 0, "Has not found phone \"Интернет-магазин\"");
+    }
+
+    @Test
+    @DisplayName("Телефон Сервисного отдела")
+    public void checkPhoneServices(){
+        List<WebElement> result = driver.findElements(By.xpath("//span[contains(text(),'(495) 120-30-32')]"));
+        assertTrue(result.size() > 0, "Has not found phone \"Сервисный отдел\"");
+    }
+
 }

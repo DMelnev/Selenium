@@ -28,7 +28,8 @@ public class AuthorizationTest extends PrepareTest {
             "ewq",
             "123",
             "!@#$%^&*()_+",
-            "<>?\":;''"
+            "<>?\":;''",
+            "123456789012345678901234567890123456789012345678901234567890123456789012345679801234567890123456798012345678901234567980123456789012345678901234567890"
     })
     public void authorisationBadLogin(String string) throws InterruptedException {
 
@@ -40,7 +41,8 @@ public class AuthorizationTest extends PrepareTest {
     @ValueSource(strings = {
             " ",
             "!@#$%^&*()?<>?+_)(*&^%$#@!\":;",
-            "йцукен"
+            "йцукен",
+            "123456789012345678901234567890123456789012345678901234567890123456789012345679801234567890123456798012345678901234567980123456789012345678901234567890"
     })
     public void authorisationBadPass(String string) throws InterruptedException {
 
