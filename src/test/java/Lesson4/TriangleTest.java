@@ -33,14 +33,14 @@ class TriangleTest {
         }
 
         @Test
-        @DisplayName("date 3 4 5 6")
+        @DisplayName("data 3 4 5 6")
         void simpleTest() {
             assertEquals(6, triangle.triangleSquare(3, 4, 5), DELTA);
             logger.info("simpleTest passed");
         }
 
         @Test
-        @DisplayName("date 3 4 5 6")
+        @DisplayName("data 3 4 5 6")
         @Disabled("disabled because it is the same as prev test")
         void SameTestDisabled() {
             assertEquals(6, triangle.triangleSquare(3, 4, 5), DELTA);
@@ -48,7 +48,7 @@ class TriangleTest {
         }
 
         @RepeatedTest(3)
-        @DisplayName("repeated, date 30000, 40000, 50000, 600000000")
+        @DisplayName("repeated, data 30000, 40000, 50000, 600000000")
         void repeatedTest() {
             assertEquals(600000000, triangle.triangleSquare(30000, 40000, 50000), DELTA);
             logger.info("repeatedTest " + ++counter + " passed");
