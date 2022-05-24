@@ -83,14 +83,4 @@ public class ArticleTest extends PrepareTest {
         WebElement result = driver.findElement(By.xpath("//div[@class=\"p-cart__title\"]/div[@class=\"text\"]"));
         assertEquals(SUCCESSFUL_ORDER_RESULT, result.getText());
     }
-
-    private void goToNextPage() {
-        String originalWindow = driver.getWindowHandle();
-        for (String windowHandle : driver.getWindowHandles()) {
-            if (!originalWindow.contentEquals(windowHandle)) {
-                driver.switchTo().window(windowHandle);
-                break;
-            }
-        }
-    }
 }

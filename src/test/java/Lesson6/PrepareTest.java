@@ -84,4 +84,14 @@ public abstract class PrepareTest {
         }
         return true;
     }
+
+    protected void goToNextPage() {
+        String originalWindow = driver.getWindowHandle();
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!originalWindow.contentEquals(windowHandle)) {
+                driver.switchTo().window(windowHandle);
+                break;
+            }
+        }
+    }
 }
