@@ -83,14 +83,4 @@ public class MainSearch extends AbstractPage {
     public String getTextResult() {
         return result.getText();
     }
-
-    protected void goToNextPage() {
-        String originalWindow = getDriver().getWindowHandle();
-        for (String windowHandle : getDriver().getWindowHandles()) {
-            if (!originalWindow.contentEquals(windowHandle)) {
-                getDriver().switchTo().window(windowHandle);
-                break;
-            }
-        }
-    }
 }

@@ -2,7 +2,7 @@
  * Class AbstractPage
  *
  * @author Melnev Dmitriy
- * @version 2022-
+ * @version 2022-05-26
  **/
 package Lesson6;
 
@@ -13,13 +13,22 @@ public abstract class AbstractPage {
 
     private WebDriver driver;
 
-    public AbstractPage(WebDriver driver){
+    public AbstractPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    protected WebDriver getDriver(){
+    protected WebDriver getDriver() {
         return this.driver;
     }
 
+    protected void goToNextPage() {
+        String originalWindow = getDriver().getWindowHandle();
+        for (String windowHandle : getDriver().getWindowHandles()) {
+            if (!originalWindow.contentEquals(windowHandle)) {
+                getDriver().switchTo().window(windowHandle);
+                break;
+            }
+        }
+    }
 }
