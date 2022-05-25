@@ -1,3 +1,9 @@
+/**
+ * Class DataSearch
+ *
+ * @author Melnev Dmitriy
+ * @version 2022-05-26
+ **/
 package Lesson6;
 
 public class DataSearch {

@@ -1,3 +1,9 @@
+/**
+ * Class AuthorisationPage
+ *
+ * @author Melnev Dmitriy
+ * @version 2022-05-26
+ **/
 package Lesson6;
 
 import org.openqa.selenium.WebDriver;
