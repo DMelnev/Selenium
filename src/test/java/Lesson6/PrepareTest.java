@@ -31,8 +31,8 @@ public abstract class PrepareTest {
     @BeforeAll
     public static void beforeAll() {
 
-        WebDriverManager.chromedriver().setup();
-//        System.setProperty("webdriver.chrome.driver", "D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
+//        WebDriverManager.chromedriver().setup();
+        System.setProperty("webdriver.chrome.driver", "D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
 
         options = new ChromeOptions();
         options.addArguments("--incognito");
