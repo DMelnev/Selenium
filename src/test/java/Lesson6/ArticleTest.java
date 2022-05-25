@@ -2,18 +2,11 @@
  * Class ArticleTest
  *
  * @author Melnev Dmitriy
- * @version 2022-05-04
+ * @version 2022-05-26
  **/
 package Lesson6;
 
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.*;
-
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
-import java.util.List;
 
 import static Lesson6.DataAuthorisation.*;
 import static Lesson6.DataSearch.*;
@@ -26,7 +19,6 @@ public class ArticleTest extends PrepareTest {
     public void createPage() {
         searchPage = new MainSearch(getDriver());
     }
-
 
     @Test
     @DisplayName("Поиск продукта нажатием Enter")
