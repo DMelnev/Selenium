@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import static Lesson6.DataAuthorisation.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class PrepareTest {
@@ -23,16 +24,12 @@ public abstract class PrepareTest {
     static ChromeOptions options;
     static WebDriver driver;
     Actions actions;
-    String HOST = "https://quke.ru";
-    String LOGIN = "gb2010@internet.ru";
-    String PASSWORD = "oeAytr93APE?";
-    String USERNAME = "Tester";
 
     @BeforeAll
     public static void beforeAll() {
 
-//        WebDriverManager.chromedriver().setup();
-        System.setProperty("webdriver.chrome.driver", "D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
+        WebDriverManager.chromedriver().setup();
+//        System.setProperty("webdriver.chrome.driver", "D:\\System\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
 
         options = new ChromeOptions();
         options.addArguments("--incognito");
@@ -51,7 +48,7 @@ public abstract class PrepareTest {
 
     @AfterEach
     public void afterEach() {
-        driver.quit();
+//        driver.quit();
     }
 
     public boolean authorization(String login, String pass) throws InterruptedException {
@@ -59,39 +56,26 @@ public abstract class PrepareTest {
     }
 
     public boolean authorization(String login, String pass, String username) throws InterruptedException {
-        driver.findElement(By.xpath(".//span[contains(.,'Вход')]")).click();
+        AuthorisationPage page = new AuthorisationPage(getDriver());
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(5))
-                    .until(driver1 -> driver1.findElement(By.cssSelector(".auth")));
-            actions
-                    .sendKeys(driver.findElement(By.xpath(".//input[@id='auth-email']")), login)
-                    .sendKeys(driver.findElement(By.xpath(".//input[@id='auth-pass']")), pass)
-                    .pause(500L)
-                    .click(driver.findElement(By.xpath(".//button[@type='submit']")))
-                    .build()
-                    .perform();
+            page
+                    .clickInput()
+                    .fillFieldsAndClick(login, pass);
         } catch (TimeoutException e) {
             fail("Authorisation form has not loaded. Timeout exception.");
         }
-        Thread.sleep(500);
-        WebElement result = new WebDriverWait(driver, Duration.ofSeconds(5))
-                .until(driver1 -> driver1.findElement(By.xpath(".//a[2]/span")));
 
-        if (!username.equals(result.getText())) {
+        if (!username.equals(page.getUsername())) {
             Thread.sleep(500);
-            driver.findElement(By.xpath("//button[@title='Close' and @class='fancybox-button fancybox-close-small']")).click();
+            page.closeForm();
             return false;
         }
         return true;
     }
 
-    protected void goToNextPage() {
-        String originalWindow = driver.getWindowHandle();
-        for (String windowHandle : driver.getWindowHandles()) {
-            if (!originalWindow.contentEquals(windowHandle)) {
-                driver.switchTo().window(windowHandle);
-                break;
-            }
-        }
+    public WebDriver getDriver() {
+        return driver;
     }
+
+
 }
