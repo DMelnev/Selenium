@@ -4,12 +4,13 @@
  * @author Melnev Dmitriy
  * @version 2022-05-04
  **/
-package Lesson6;
+package Lesson7;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static Lesson7.DataAuthorisation.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AuthorizationTest extends PrepareTest {
