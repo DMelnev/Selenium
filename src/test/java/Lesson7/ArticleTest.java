@@ -2,10 +2,12 @@
  * Class ArticleTest
  *
  * @author Melnev Dmitriy
- * @version 2022-05-26
+ * @version 2022-06-05
  **/
 package Lesson7;
 
+import io.qameta.allure.*;
+import jdk.jfr.Description;
 import org.junit.jupiter.api.*;
 
 import static Lesson7.DataAuthorisation.*;
@@ -19,9 +21,14 @@ public class ArticleTest extends PrepareTest {
     public void createPage() {
         searchPage = new MainSearch(getDriver());
     }
-
+    @Epic(value = "Поиск")
     @Test
+    @Owner(value = "Мельнев Дмитрий")
     @DisplayName("Поиск продукта нажатием Enter")
+    @Description("Поиск продукта нажатием клавиши Enter")
+    @Link(name = "Ссылка", url = "https://quke.ru")
+    @Issue("https://quke.ru")
+    @Severity(SeverityLevel.CRITICAL)
     public void findProductBySubmit() throws InterruptedException {
         searchPage.toSearchBySubmit(TEST_SEARCH);
         assertTrue(searchPage.takeNumberValidItems() > 0, "Hasn't found some search result");
@@ -29,6 +36,7 @@ public class ArticleTest extends PrepareTest {
 
     @Test
     @DisplayName("Поиск продукта нажатием ЛКМ")
+    @Description("Поиск продукта нажатием левой кнопки мыши по значку поиск")
     public void findProductByClick() throws InterruptedException {
         searchPage.toSearchByClick(TEST_SEARCH);
         assertTrue(searchPage.takeNumberValidItems() > 0, "Hasn't found some search result");
