@@ -2,7 +2,7 @@
  * Class PrepareTest
  *
  * @author Melnev Dmitriy
- * @version 2022-05-04
+ * @version 2022-06-06
  **/
 package Lesson7;
 
@@ -11,9 +11,12 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import java.time.Duration;
+import java.util.List;
 
 import static Lesson7.DataAuthorisation.*;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -21,8 +24,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 public abstract class PrepareTest {
 
     static ChromeOptions options;
-    static WebDriver driver;
-    Actions actions;
+    //    static WebDriver driver;
+    static EventFiringWebDriver driver;
+
 
     @BeforeAll
     public static void beforeAll() {
@@ -39,14 +43,22 @@ public abstract class PrepareTest {
 
     @BeforeEach
     public void beforeEach() {
-        driver = new ChromeDriver(options);
+//        driver = new ChromeDriver(options);
+        driver = new EventFiringWebDriver(new ChromeDriver(options));
+        driver.register(new MyDriverEventListener());
+
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.get(HOST);
-        actions = new Actions(driver);
     }
 
     @AfterEach
     public void afterEach() {
+        List<LogEntry> allLogRows = getDriver().manage().logs().get(LogType.BROWSER).getAll();
+        if (!allLogRows.isEmpty()) {
+            for (LogEntry entry : allLogRows) {
+                System.out.println(entry.getMessage());
+            }
+        }
         driver.quit();
     }
 
@@ -76,5 +88,7 @@ public abstract class PrepareTest {
         return driver;
     }
 
-
+    public byte[] saveScreenshot(byte[] screenShot) {
+        return screenShot;
+    }
 }

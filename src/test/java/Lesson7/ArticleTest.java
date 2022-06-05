@@ -10,6 +10,10 @@ import io.qameta.allure.*;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 import static Lesson7.DataAuthorisation.*;
 import static Lesson7.DataSearch.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,6 +25,7 @@ public class ArticleTest extends PrepareTest {
     public void createPage() {
         searchPage = new MainSearch(getDriver());
     }
+
     @Epic(value = "Поиск")
     @Test
     @Owner(value = "Мельнев Дмитрий")
@@ -29,28 +34,38 @@ public class ArticleTest extends PrepareTest {
     @Link(name = "Ссылка", url = "https://quke.ru")
     @Issue("https://quke.ru")
     @Severity(SeverityLevel.CRITICAL)
-    public void findProductBySubmit() throws InterruptedException {
+    public void findProductBySubmit() throws InterruptedException, IOException {
         searchPage.toSearchBySubmit(TEST_SEARCH);
+        File file = Utils.makeScreenshot(getDriver(),"screenshot.png");
+        saveScreenshot(Files.readAllBytes(file.toPath()));
         assertTrue(searchPage.takeNumberValidItems() > 0, "Hasn't found some search result");
     }
 
     @Test
+    @Owner(value = "Мельнев Дмитрий")
     @DisplayName("Поиск продукта нажатием ЛКМ")
     @Description("Поиск продукта нажатием левой кнопки мыши по значку поиск")
+    @Severity(SeverityLevel.CRITICAL)
     public void findProductByClick() throws InterruptedException {
         searchPage.toSearchByClick(TEST_SEARCH);
         assertTrue(searchPage.takeNumberValidItems() > 0, "Hasn't found some search result");
     }
 
     @Test
+    @Owner(value = "Мельнев Дмитрий")
     @DisplayName("Поиск отсутствующего товара")
+    @Description("какое то описание")
+    @Severity(SeverityLevel.MINOR)
     public void findNotPresentProduct() throws InterruptedException {
         searchPage.toSearchByClick(TEST_SEARCH_FAIL);
         assertEquals(0, searchPage.takeNumberInValidItems(), "Has found some search result but don't must");
     }
 
     @Test
+    @Owner(value = "Мельнев Дмитрий")
     @DisplayName("Добавление товара в корзину")
+    @Description("какое то описание")
+    @Severity(SeverityLevel.CRITICAL)
     public void checkArticle() throws InterruptedException {
 
         if (!authorization(LOGIN, PASSWORD, USERNAME)) fail("Cannot log in");
